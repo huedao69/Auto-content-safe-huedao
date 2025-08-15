@@ -1,20 +1,9 @@
-      - name: Run Safe Mode
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          WORDPRESS_BASE_URL: ${{ secrets.WORDPRESS_BASE_URL }}
-          WORDPRESS_USERNAME: ${{ secrets.WORDPRESS_USERNAME }}
-          WORDPRESS_APP_PASSWORD: ${{ secrets.WORDPRESS_APP_PASSWORD }}
-          MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
-          MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
-          DIGEST_TO: ${{ secrets.DIGEST_TO }}
-        run: |
-          python -m app.main --once
-          name: Auto Content Safe Mode
+name: Auto Content Safe Mode
 
 on:
   schedule:
     - cron: "0 */12 * * *"  # chạy mỗi 12 giờ
-  workflow_dispatch: {}     # cho phép chạy tay
+  workflow_dispatch: {}
 
 jobs:
   run:
