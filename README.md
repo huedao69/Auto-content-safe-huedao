@@ -5,8 +5,8 @@ Tự động thu thập tin tức hàng hải Việt Nam → GPT tóm tắt (có
 ## Nhanh gọn để chạy
 1) `cp .env.example .env` rồi điền:
    - `OPENAI_API_KEY=`
-   - `WORDPRESS_BASE_URL=` (vd: https://yourdomain.com)
-   - `WORDPRESS_USERNAME=` (user Editor dành riêng, ví dụ api-bot)
+   - `WORDPRESS_BASE_URL= https://huedao.com` (vd: https://yourdomain.com)
+   - `WORDPRESS_USERNAME= api-bot` (user Editor dành riêng, ví dụ api-bot)
    - `WORDPRESS_APP_PASSWORD=` (Application Password của user đó)
 2) Kiểm tra nguồn trong `app/scraper/sources.yaml` (đã cắm sẵn hàng hải VN).
 3) Chạy một vòng: `python -m app.main --once` (hoặc dùng Docker/GitHub Actions).
