@@ -1,34 +1,44 @@
 name: Chế độ an toàn nội dung tự động
+
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */12 * * *"  # Chạy tự động mỗi 12 giờ (UTC)
+    - cron: '0 */12 * * *'  # Chạy tự động mỗi 12 giờ (UTC)
 
 jobs:
   run:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Run Safe Mode job
+      - name: Run script in safe mode
         env:
           WORDPRESS_BASE_URL: ${{ secrets.WORDPRESS_BASE_URL }}
           WORDPRESS_USERNAME: ${{ secrets.WORDPRESS_USERNAME }}
           WORDPRESS_APP_PASSWORD: ${{ secrets.WORDPRESS_APP_PASSWORD }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          SAFE_MODE: "true"          # Luôn kích hoạt chế độ an toàn
-          TZ: Asia/Ho_Chi_Minh       # Múi giờ Việt Nam cho log
+          SAFE_MODE: 'true'          # Luôn bật chế độ an toàn
+          TZ: Asia/Ho_Chi_Minh       # Thiết lập múi giờ Việt Nam cho log
         run: |
-          # Thực thi một vòng thu thập và đăng nội dung ở chế độ an toàn
-          python app/main.py --once || python app/main.py
+          if [ -f main.py ]; then
+            python main.py --once
+          elif [ -f scripts/main.py ]; then
+            python scripts/main.py --once
+          elif [ -f src/main.py ]; then
+            python src/main.py --once
+          else
+            echo "Error: file main.py không tồn tại trong repo, dừng workflow." >&2
+            exit 1
+          fi
